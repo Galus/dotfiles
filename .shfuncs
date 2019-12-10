@@ -1,0 +1,19 @@
+randua() {
+    sort -R ~/.etc/.user-agents.txt | head -n 1
+}
+
+vimprev() {
+    VIMENV=prev vim $@
+}
+
+vimtalk() {
+    VIMENV=talk vim $@
+}
+
+notes() {
+    cat ~/.notes
+}
+
+note() {
+    echo $@ | tee -a ~/.notes
+}

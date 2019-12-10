@@ -1,0 +1,2 @@
+NOTES
+for x in `seq -f "%03g" 10`;do echo "\#SLIDE $x" > slide$x.md; echo Created $x; done

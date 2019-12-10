@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "coc-git": ">=1.6.16",
+    "coc-rls": ">=1.1.4"
+  }
+}
