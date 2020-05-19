@@ -1,0 +1,23 @@
+let g:go_version_warning = 0
+set tabstop=2
+set shiftwidth=2
+
+" Tomnomnom yeet
+if $VIMENV == 'talk'
+  set background=light
+  let g:solarized_termcolors=256
+  colo solarized
+  noremap <Space> :n<CR>
+  noremap <Backspace> :N<CR>
+endif
+
+if $VIMENV == 'prev'
+  noremap <Space> :n<CR>
+  noremap <Backspace> :N<CR>
+  set noswapfile
+endif
+
+set rnu
+
+" coc.vim and its hotkeys
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
