@@ -1,1 +1,0 @@
-" Consolidated into init.vim

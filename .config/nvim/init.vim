@@ -1,4 +1,3 @@
-" vim-bootstrap 
 
 "*****************************************************************************
 "" Vim-PLug core
@@ -38,19 +37,27 @@ Plug 'norcalli/nvim-colorizer.lua'
 "Plug 'jistr/vim-nerdtree-tabs'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
-Plug 'vim-airline/vim-airline'
+Plug 'tpope/vim-unimpaired'
+Plug 'shumphrey/fugitive-gitlab.vim'
+" Plug 'tpope/vim-rhubarb' " required by fugitive to :Gbrowse GITHUB
+
+" Plug 'vim-airline/vim-airline'
 "Plug 'vim-airline/vim-airline-themes'
+Plug 'itchyny/lightline.vim'
+Plug 'mengelbrecht/lightline-bufferline'
+"Plug 'scrooloose/nerdtree'
+"Plug 'jistr/vim-nerdtree-tabs'
 "Plug 'airblade/vim-gitgutter' PIECE OF TRASH SYNC LAGGY GITGUTTER
 Plug 'vim-scripts/grep.vim'
 Plug 'vim-scripts/CSApprox'
 Plug 'Raimondi/delimitMate'
 Plug 'majutsushi/tagbar'
-Plug 'w0rp/ale'
+"Plug 'w0rp/ale'
 Plug 'Yggdroot/indentLine'
 Plug 'avelino/vim-bootstrap-updater'
 Plug 'sheerun/vim-polyglot'
-Plug 'tpope/vim-rhubarb' " required by fugitive to :Gbrowse
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'liuchengxu/graphviz.vim'
 
 if isdirectory('/usr/local/opt/fzf')
   Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
@@ -72,6 +79,11 @@ Plug 'Shougo/vimproc.vim', {'do': g:make}
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
+" BROKEN Plug 'jbyuki/venn.nvim'
+Plug 'scrooloose/vim-slumlord'
+
+" Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" Needs access to openapi-generator-cli docker image Plug 'xavierchow/vim-swagger-preview'
 
 "*****************************************************************************
 "" Custom bundles
@@ -100,13 +112,22 @@ Plug 'jelera/vim-javascript-syntax'
 Plug 'davidhalter/jedi-vim'
 Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
 
-"=========================== Custom plugins ================================== 
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'heavenshell/vim-jsdoc'
+"=========================== Custom plugins ==================================
+" If having problems with vim-doge, check https://github.com/kkoomen/vim-doge/issues/291
+Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } }
+" g:doge_buffer_mappings = 0
+let g:doge_mapping = '<Leader>md'
+" g:doge_mapping_comment_jump_forward = '<Tab>'
+" g:doge_mapping_comment_jump_backward = '<S-Tab>'
 Plug 'mhinz/vim-startify'
+Plug 'hashivim/vim-terraform'
+Plug 'juliosueiras/vim-terraform-completion'
+Plug 'vimwiki/vimwiki'
 
 "*****************************************************************************
 "*****************************************************************************
+
+let g:polyglot_disabled = ['python']
 
 "" Include user's extra bundle
 if filereadable(expand("~/.config/nvim/local_bundles.vim"))
@@ -114,6 +135,7 @@ if filereadable(expand("~/.config/nvim/local_bundles.vim"))
 endif
 
 call plug#end()
+
 
 " Required:
 filetype plugin indent on
@@ -171,13 +193,14 @@ syntax on
 set ruler
 set number
 
-let no_buffers_menu=1
+" let no_buffers_menu=1
 
 set mousemodel=popup
 set guioptions=egmrti
 set gfn=Monospace\ 10
 
 if has("gui_running")
+  set t_Co=256
   if has("gui_mac") || has("gui_macvim")
     set guifont=Menlo:h12
     set transparency=7
@@ -191,7 +214,7 @@ else
   let g:indentLine_char = '┆'
   let g:indentLine_faster = 1
 
-  
+
 endif
 
 "" Disable the blinking cursor.
@@ -217,26 +240,25 @@ nnoremap n nzzzv
 nnoremap N Nzzzv
 
 "===================== COLORS ================================================
-set t_Co=256
 if (has("termguicolors"))
  set termguicolors
 endif
-" augroup qs_colors
-"   autocmd!
-"   autocmd colorscheme * highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=underline
-"   autocmd colorscheme * highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
-" augroup END
+augroup qs_colors
+  autocmd!
+  autocmd colorscheme * highlight QuickScopePrimary gui=underline ctermfg=155 cterm=underline
+  autocmd colorscheme * highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
+augroup END
 
-" vim-airline
-"let g:airline_theme = 'powerlineish'
-"let g:airline_theme = 'tender'
-let g:airline_theme = 'gruvbox'
-let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#ale#enabled = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tagbar#enabled = 1
-let g:airline_skip_empty_sections = 1
-" -> See let g:airline_theme
+"" vim-airline
+""let g:airline_theme = 'powerlineish'
+""let g:airline_theme = 'tender'
+"let g:airline_theme = 'gruvbox'
+"let g:airline#extensions#branch#enabled = 1
+""let g:airline#extensions#ale#enabled = 1
+"let g:airline#extensions#tabline#enabled = 1
+"let g:airline#extensions#tagbar#enabled = 1
+"let g:airline_skip_empty_sections = 1
+"" -> See let g:airline_theme
 "
 "silent! colorscheme molokai
 
@@ -245,11 +267,11 @@ let g:airline_skip_empty_sections = 1
 " silent! colorscheme tender
 silent! colorscheme gruvbox
 
-" NOTE: Making sure this works as they should :( 
-autocmd vimenter * colorscheme gruvbox
-            \ | AirlineRefresh
-            \ | highlight QuickScopePrimary gui=underline ctermfg=155 cterm=underline
-            \ | highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
+" NOTE: Making sure this works as they should :(
+" autocmd vimenter * colorscheme gruvbox
+            " \ | AirlineRefresh
+            " \ | highlight QuickScopePrimary gui=underline ctermfg=155 cterm=underline
+            " \ | highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
 
             " \ | highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=underline
 if exists("*fugitive#statusline")
@@ -263,6 +285,7 @@ endif
 cnoreabbrev W! w!
 cnoreabbrev Q! q!
 cnoreabbrev Qall! qall!
+cnoreabbrev qq qall
 cnoreabbrev Wq wq
 cnoreabbrev Wa wa
 cnoreabbrev wQ wq
@@ -304,7 +327,7 @@ endif
 "" The PC is fast enough, do syntax highlight syncing from start unless 200 lines
 augroup vimrc-sync-fromstart
   autocmd!
-  autocmd BufEnter * :syntax sync maxlines=200 
+  autocmd BufEnter * :syntax sync maxlines=200
 augroup END
 
 "" Remember cursor position
@@ -387,7 +410,7 @@ endif
 
 cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
 nnoremap <silent> <leader>b :Buffers<CR>
-nnoremap <silent> <leader>e :FZF -m<CR>
+nnoremap <silent> <leader>ff :FZF -m<CR>
 "Recovery commands from history through FZF
 nmap <leader>y :History:<CR>
 
@@ -396,9 +419,6 @@ let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 let g:UltiSnipsEditSplit="vertical"
-
-" ale - Set later by autocmds
-let g:ale_linters = {}
 
 " Tagbar
 nmap <silent> <F4> :TagbarToggle<CR>
@@ -425,11 +445,22 @@ if has('macunix')
   vmap <C-c> :w !pbcopy<CR><CR>
 endif
 
+if has('wsl')
+    " WSL yank support
+    let s:clip = '/mnt/c/Windows/System32/clip.exe'  " change this path according to your mount point
+    if executable(s:clip)
+        augroup WSLYank
+            autocmd!
+            autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
+        augroup END
+    endif
+endif
+
 "" Buffer nav
-noremap <leader>z :bp<CR>
+"" noremap <leader>z :bp<CR> reserving for code exec
+"" noremap <leader>x :bn<CR> reserving for code exec
 noremap <leader>q :bp<CR>
-noremap <leader>x :bn<CR>
-noremap <leader>w :bn<CR>
+noremap <leader><TAB> :bn<CR>
 
 
 "" Clean search (highlight)
@@ -449,12 +480,31 @@ vmap > >gv
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
-"" Open current line on GitHub
+"" Open current line on GitHub / GitLab
+let g:fugitive_gitlab_domains = ['https://sfgitlab.opr.statefarm.org']
 nnoremap <Leader>o :.Gbrowse<CR>
 
 "*****************************************************************************
 "" Custom configs
 "*****************************************************************************
+" lightlint
+let g:lightline = {
+      \ 'colorscheme': 'gruvbox',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'tabline': {
+      \   'left': [ ['buffers'] ],
+      \   'right': [ ['close'] ]
+      \ },
+      \ 'component_expand': {
+      \   'buffers': 'lightline#bufferline#buffers'
+      \ },
+      \ 'component_type': {
+      \   'buffers': 'tabsel'
+      \ }
+      \ }
+" let g:lightline#bufferline#auto_hide = 4000
 
 " go
 " vim-go
@@ -501,7 +551,6 @@ nnoremap <Leader>o :.Gbrowse<CR>
 "   au Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
 "   au Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
 "   au Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
-
 "   au FileType go nmap <Leader>dd <Plug>(go-def-vertical)
 "   au FileType go nmap <Leader>dv <Plug>(go-doc-vertical)
 "   au FileType go nmap <Leader>db <Plug>(go-doc-browser)
@@ -519,10 +568,6 @@ nnoremap <Leader>o :.Gbrowse<CR>
 
 " augroup END
 
-" ale
-:call extend(g:ale_linters, {
-    \"go": ['golint', 'go vet'], })
-
 " html
 " for html files, 2 spaces
 autocmd Filetype html setlocal ts=2 sw=2 expandtab
@@ -534,25 +579,32 @@ let g:javascript_enable_domhtmlcss = 1
 augroup vimrc-javascript
   autocmd!
   autocmd FileType javascript setl tabstop=2|setl shiftwidth=2|setl expandtab softtabstop=2
+              \ | noremap <leader>x :w !node<CR>
+  " autocmd FileType javascript nnoremap <leader>x :w !node<CR>
+  autocmd BufWritePre <buffer> %s/\s\+$//e
 augroup END
 
 " vim-typescript
 augroup vimrc-typescript
   autocmd!
   autocmd FileType typescript setl tabstop=2|setl shiftwidth=2|setl expandtab softtabstop=2
+              \ | noremap <leader>x :w !ts-node<CR>
+  " " I am having problems trying to chain these \ | , with the duration of status
+  " autocmd FileType typescript nnoremap <leader>x :w !ts-node<CR>
+  autocmd BufWritePre <buffer> %s/\s\+$//e
 augroup END
 
 " python
 " vim-python
 augroup vimrc-python
   autocmd!
-  autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8 colorcolumn=79
+  autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8 colorcolumn=99
       \ formatoptions+=croq softtabstop=4
       \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
 augroup END
 
 " jedi-vim
-let g:jedi#popup_on_dot = 0
+let g:jedi#popup_on_dot = 1
 let g:jedi#goto_assignments_command = "<leader>g"
 let g:jedi#goto_definitions_command = "<leader>d"
 let g:jedi#documentation_command = "K"
@@ -562,16 +614,11 @@ let g:jedi#show_call_signatures = "0"
 let g:jedi#completions_command = "<C-Space>"
 let g:jedi#smart_auto_mappings = 0
 
-" ale
-:call extend(g:ale_linters, {
-    \'python': ['flake8'], })
-
-" vim-airline
-let g:airline#extensions#virtualenv#enabled = 1
+" " vim-airline
+" let g:airline#extensions#virtualenv#enabled = 1
 
 " Syntax highlight
 " Default highlight is better than polyglot
-let g:polyglot_disabled = ['python']
 let python_highlight_all = 1
 
 
@@ -588,51 +635,51 @@ let python_highlight_all = 1
 "" Convenience variables
 "*****************************************************************************
 " NOTE: I added this:
-let g:airline_powerline_fonts = 1
-" vim-airline
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
+" let g:airline_powerline_fonts = 1
+" " vim-airline
+" if !exists('g:airline_symbols')
+"   let g:airline_symbols = {}
+" endif
 
-if !exists('g:airline_powerline_fonts')
-  let g:airline#extensions#tabline#left_sep = ' '
-  let g:airline#extensions#tabline#left_alt_sep = '|'
-  let g:airline_left_sep          = '▶'
-  let g:airline_left_alt_sep      = '»'
-  let g:airline_right_sep         = '◀'
-  let g:airline_right_alt_sep     = '«'
-  let g:airline#extensions#branch#prefix     = '⤴' "➔, ➥, ⎇
-  let g:airline#extensions#readonly#symbol   = '⊘'
-  let g:airline#extensions#linecolumn#prefix = '¶'
-  let g:airline#extensions#paste#symbol      = 'ρ'
-  let g:airline_symbols.linenr    = '␊'
-  let g:airline_symbols.branch    = '⎇'
-  let g:airline_symbols.paste     = 'ρ'
-  let g:airline_symbols.paste     = 'Þ'
-  let g:airline_symbols.paste     = '∥'
-  let g:airline_symbols.whitespace = 'Ξ'
-else
-  let g:airline#extensions#tabline#left_sep = ''
-  let g:airline#extensions#tabline#left_alt_sep = ''
+" if !exists('g:airline_powerline_fonts')
+"   let g:airline#extensions#tabline#left_sep = ' '
+"   let g:airline#extensions#tabline#left_alt_sep = '|'
+"   let g:airline_left_sep          = '▶'
+"   let g:airline_left_alt_sep      = '»'
+"   let g:airline_right_sep         = '◀'
+"   let g:airline_right_alt_sep     = '«'
+"   let g:airline#extensions#branch#prefix     = '⤴' "➔, ➥, ⎇
+"   let g:airline#extensions#readonly#symbol   = '⊘'
+"   let g:airline#extensions#linecolumn#prefix = '¶'
+"   let g:airline#extensions#paste#symbol      = 'ρ'
+"   let g:airline_symbols.linenr    = '␊'
+"   let g:airline_symbols.branch    = '⎇'
+"   let g:airline_symbols.paste     = 'ρ'
+"   let g:airline_symbols.paste     = 'Þ'
+"   let g:airline_symbols.paste     = '∥'
+"   let g:airline_symbols.whitespace = 'Ξ'
+" else
+"   let g:airline#extensions#tabline#left_sep = ''
+"   let g:airline#extensions#tabline#left_alt_sep = ''
 
-  " powerline symbols
-  let g:airline_left_sep = ''
-  let g:airline_left_alt_sep = ''
-  let g:airline_right_sep = ''
-  let g:airline_right_alt_sep = ''
-  let g:airline_symbols.branch = ''
-  let g:airline_symbols.readonly = ''
-  let g:airline_symbols.linenr = ''
-endif
+"   " powerline symbols
+"   let g:airline_left_sep = ''
+"   let g:airline_left_alt_sep = ''
+"   let g:airline_right_sep = ''
+"   let g:airline_right_alt_sep = ''
+"   let g:airline_symbols.branch = ''
+"   let g:airline_symbols.readonly = ''
+"   let g:airline_symbols.linenr = ''
+" endif
 
 
-"=========================== Custom global vars ============================== 
-let g:ale_sign_warning = '⚠️'
-let g:ale_fixers = {
-      \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-      \   'javascript': ['eslint'],
-      \   'typescript': ['eslint']
-      \}
+"=========================== Custom global vars ==============================
+" let g:ale_sign_warning = '⚠️'
+" let g:ale_fixers = {
+"       \   '*': ['remove_trailing_lines', 'trim_whitespace'],
+"       \   'javascript': ['eslint'],
+"       \   'typescript': ['eslint']
+"       \}
 let g:tagbar_autofocus = 1
 
 " quick-scope config
@@ -674,11 +721,11 @@ let g:startify_custom_header =
 " let g:bufferline_echo = 0
 " set noshowmode
 
-"=========================== Custom modes ==================================== 
+"=========================== Custom modes ====================================
 "" relative line numbers
 set rnu
-"" colored column at 80
-set cc=80
+"" colored column at 100
+set cc=100
 
 " Custom Auto Commands
 " augroup vimrc-javascript
@@ -703,8 +750,16 @@ nnoremap <leader>pv :windcmd v<bar> :Ex <bar> :vertical resize 30<CR>
 "" Close buffer
 nnoremap <leader>d :bp<cr>:bd #<cr>
 
-:nmap <space>e :CocCommand explorer<CR>
+"" Create buffers
+nnoremap <leader>n :vnew<cr>
 
+"" Diff buffers
+nnoremap <leader>bd :windo diffthis<cr>
+nnoremap <leader>bdd :diffoff!<cr>
+
+:nmap <silent> <space>e :CocCommand explorer --width 25<CR>
+
+set showtabline=2
 
 "======================= Coc Config ==========================================
 "" Coc Config
@@ -849,5 +904,9 @@ nnoremap <silent> <leader>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent> <leader>cp  :<C-u>CocListResume<CR>
 
+let g:vimwiki_list = [{'path': '~/vimwiki/',
+                      \ 'syntax': 'markdown', 'ext': '.md'}]
+
+" let g:coc_status_warning_sign = '⚠️'
+
 "=============================================================== END OF CFG ==
-"
