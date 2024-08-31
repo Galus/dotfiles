@@ -5,9 +5,13 @@ TODO: Get the one from my multi monitor workstation setup
 Using mac, using launchctl for service
 
 Copied the one generated for yabai at
-```/Users/m/Library/LaunchAgents/com.koekeishiya.yabai.plist```
+```
+/Users/m/Library/LaunchAgents/com.koekeishiya.yabai.plist
+```
 into
-```/Users/m/Library/LaunchAgents/com.koekeishiya.skhd.plist```
+```
+/Users/m/Library/LaunchAgents/com.koekeishiya.skhd.plist
+```
 and updated it 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -47,4 +51,6 @@ and updated it
 ```
 
 Then ran command 
-```launchctl load ~/Library/LaunchAgents/com.koekeishiya.skhd.plist```
+```
+launchctl load ~/Library/LaunchAgents/com.koekeishiya.skhd.plist
+```
