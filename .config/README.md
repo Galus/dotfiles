@@ -1,6 +1,3 @@
-# dotfiles
-highest level
-
 Check the history to see the evolution of my configs.
 
 I have old...
