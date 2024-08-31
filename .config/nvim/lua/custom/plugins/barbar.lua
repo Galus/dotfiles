@@ -7,6 +7,12 @@ return {
     },
     init = function()
       vim.g.barbar_auto_setup = false
+      vim.keymap.set('n', '<leader><TAB>', ':BufferNext<cr>', { desc = 'Next Buffer' })
+      vim.keymap.set('n', '<leader>b', ':BufferPick<cr>', { desc = 'Pick Buffer' })
+      vim.keymap.set('n', '<leader>d', ':BufferClose<cr>', { desc = 'Close Buffer' })
+      vim.keymap.set('n', '<leader>bb', ':BufferPin<cr>', { desc = 'Pin Buffer' })
+      vim.keymap.set('n', '<leader>bp', ':BufferMovePrevious<cr>', { desc = 'Move Buffer Previous' })
+      vim.keymap.set('n', '<leader>bn', ':BufferMoveNext<cr>', { desc = 'Move Buffer Next' })
     end,
     opts = {
       -- lazy.nvim will automatically call setup for you. put your options here, anything missing will use the default:

@@ -1,0 +1,5 @@
+return {
+  {
+    'rubiin/fortune.nvim',
+  },
+}

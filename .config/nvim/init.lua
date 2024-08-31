@@ -790,6 +790,7 @@ require('lazy').setup({
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
+          { name = 'emoji' }, -- uses emoji.nvim
         },
       }
     end,
@@ -921,8 +922,10 @@ vim.opt.showmode = false
 vim.opt.colorcolumn = '100'
 vim.opt.showtabline = 2
 
-vim.keymap.set('n', '<leader>d', ':bp<cr>:bd #<cr>', { desc = 'Close buffer' })
-vim.keymap.set('n', '<leader><TAB>', ':bn<cr>')
+-- I AM CONAN THE BARBAR.NVIM-IAN
+-- vim.keymap.set('n', '<leader>d', ':bp<cr>:bd #<cr>', { desc = 'Close buffer' })
+-- vim.keymap.set('n', '<leader><TAB>', ':bn<cr>')
+
 vim.keymap.set('v', '<', '<gv')
 vim.keymap.set('v', '>', '>gv')
 vim.keymap.set('n', ';', ':', { desc = 'Quality of life ; -> :' })
