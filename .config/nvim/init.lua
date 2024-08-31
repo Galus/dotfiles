@@ -955,6 +955,7 @@ vim.g.clipboard = {
   },
 }
 
+vim.opt.emoji = false
 -- local function galuspres()
 --   require('kanagawa').setup {
 --     transparent = false, -- do not set background color
