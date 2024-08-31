@@ -6,12 +6,9 @@ Using mac, using launchctl for service
 
 Copied the one generated for yabai at
 ```
-/Users/m/Library/LaunchAgents/com.koekeishiya.yabai.plist
+cp /Users/m/Library/LaunchAgents/com.koekeishiya.yabai.plist /Users/m/Library/LaunchAgents/com.koekeishiya.skhd.plist
 ```
-into
-```
-/Users/m/Library/LaunchAgents/com.koekeishiya.skhd.plist
-```
+
 and updated it 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
